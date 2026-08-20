@@ -6,3 +6,5 @@ type Item struct {
 }
 
 type Result struct{ ID string }
+
+func (i Item) Valid() bool { return i.ID != "" }
