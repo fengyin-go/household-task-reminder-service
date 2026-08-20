@@ -4,7 +4,9 @@ type Cache struct{ entries map[string][]string }
 
 func NewCache() *Cache { return &Cache{entries: map[string][]string{}} }
 
-func (c *Cache) Store(id string, tags []string) { c.entries[id] = tags }
+func (c *Cache) Store(id string, tags []string) {
+	c.entries[id] = append([]string(nil), tags...)
+}
 
 func (c *Cache) Count(id string) int { return len(c.entries[id]) }
 

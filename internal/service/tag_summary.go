@@ -12,5 +12,9 @@ func NewTagSummaryService(store *summary.Store, worker *summary.Worker) *TagSumm
 }
 
 func (s *TagSummaryService) Refresh(id string) {
-	s.worker.Aggregate(id, s.store.Get(id))
+	if !s.store.Has(id) {
+		return
+	}
+	snapshot := s.store.Get(id)
+	s.worker.Aggregate(id, append([]string(nil), snapshot...))
 }
