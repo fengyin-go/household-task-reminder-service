@@ -16,6 +16,10 @@ type TaskView struct {
 	Version int
 }
 
-func (e Event) Advances(current TaskView) bool { return true }
+func (e Event) Advances(current TaskView) bool {
+	return e.State != "" && e.Version > current.Version
+}
 
-func (e Event) Valid() bool { return true }
+func (e Event) Valid() bool {
+	return e.TaskID != "" && e.Version > 0 && (e.State == StateDoing || e.State == StateDone)
+}

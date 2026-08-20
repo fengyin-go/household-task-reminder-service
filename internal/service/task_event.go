@@ -9,5 +9,8 @@ func NewTaskEventService(worker *events.Worker) *TaskEventService {
 }
 
 func (s *TaskEventService) Replay(event events.Event) {
+	if event.TaskID == "" || event.Version == 0 {
+		return
+	}
 	s.worker.Apply(event)
 }
