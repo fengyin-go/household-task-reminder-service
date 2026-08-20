@@ -13,5 +13,7 @@ func (s *TaskListCleanup) Delete(id string) (CleanupStatus, error) {
 	if err == nil {
 		return CleanupStatus{}, nil
 	}
-	return CleanupStatus{Retryable: true}, err
+	// 部分清理失败：不要隐藏为成功，也不要标记为可重试——重试会重复清理。
+	// 将错误上抛，由调用方人工介入恢复。
+	return CleanupStatus{Retryable: false}, err
 }
