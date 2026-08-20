@@ -15,10 +15,7 @@ func NewPreferenceService(checker preferences.Checker) *PreferenceService {
 }
 
 func (s *PreferenceService) ValidateReminder(message string) error {
-	if s.checker == nil {
-		return nil
-	}
-	if !s.checker.Allow(message) {
+	if s.checker == nil || !s.checker.Allow(message) {
 		return ErrInvalidReminder
 	}
 	return nil

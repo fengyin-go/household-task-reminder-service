@@ -8,17 +8,11 @@ type Checker interface {
 
 type requiredChecker struct{}
 
-func (c *requiredChecker) Allow(value string) bool {
-	if c == nil {
-		return true
-	}
-	return strings.TrimSpace(value) != ""
-}
+func (*requiredChecker) Allow(value string) bool { return strings.TrimSpace(value) != "" }
 
 func NewChecker(enabled bool) Checker {
 	if !enabled {
-		var checker *requiredChecker
-		return checker
+		return nil
 	}
 	return &requiredChecker{}
 }
