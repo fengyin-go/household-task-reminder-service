@@ -9,7 +9,7 @@ func (r *Repository) Delete(id string) error {
 	r.Cleanups++
 	if r.Fail {
 		r.Fail = false
-		return ErrDeleteFailed
+		return &PartialError{Cleaned: true, Cause: ErrDeleteFailed}
 	}
 	return nil
 }
