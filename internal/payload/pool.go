@@ -11,6 +11,7 @@ func NewPool() *Pool {
 func (p *Pool) Copy(value string) []byte {
 	buf := p.buffers.Get().([]byte)[:0]
 	buf = append(buf, value...)
+	stable := append([]byte(nil), buf...)
 	p.buffers.Put(buf[:0])
-	return buf
+	return stable
 }

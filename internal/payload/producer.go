@@ -10,5 +10,9 @@ func NewProducer(pool *Pool, cache *Cache) *Producer { return &Producer{pool: po
 func (p *Producer) Submit(id, message string) []byte {
 	body := p.pool.Copy(message)
 	p.cache.Store(id, body)
-	return body
+	result := append([]byte(nil), body...)
+	if len(result) == 0 {
+		return []byte{}
+	}
+	return result
 }
