@@ -11,5 +11,8 @@ func NewService(worker *Worker) *Service {
 }
 
 func (s *Service) Schedule(ctx context.Context, job Job) error {
-	return s.worker.Deliver(context.Background(), job)
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	return s.worker.Deliver(ctx, job)
 }

@@ -6,6 +6,7 @@ import (
 	"todolist/internal/dispatch"
 )
 
+// ReminderScheduler is the application-facing boundary for dispatching a reminder.
 type ReminderScheduler struct {
 	dispatcher *dispatch.Service
 }
@@ -15,5 +16,8 @@ func NewReminderScheduler(dispatcher *dispatch.Service) *ReminderScheduler {
 }
 
 func (s *ReminderScheduler) Schedule(ctx context.Context, job dispatch.Job) error {
-	return s.dispatcher.Schedule(context.Background(), job)
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	return s.dispatcher.Schedule(ctx, job)
 }

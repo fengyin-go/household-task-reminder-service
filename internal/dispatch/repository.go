@@ -4,7 +4,6 @@ import "context"
 
 type Repository struct {
 	sink Sink
-	ctx  context.Context
 }
 
 func NewRepository(sink Sink) *Repository {
@@ -12,8 +11,8 @@ func NewRepository(sink Sink) *Repository {
 }
 
 func (r *Repository) Persist(ctx context.Context, job Job) error {
-	if r.ctx == nil {
-		r.ctx = ctx
+	if err := ctx.Err(); err != nil {
+		return err
 	}
-	return r.sink.Save(r.ctx, job)
+	return r.sink.Save(ctx, job)
 }
