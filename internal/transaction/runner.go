@@ -7,7 +7,7 @@ func NewRunner(repo *Repository) *Runner { return &Runner{repo: repo} }
 func (r *Runner) Deliver(reminder *Reminder, fail bool) error {
 	r.repo.Begin()
 	if fail {
-		r.repo.Commit(reminder)
+		r.repo.Rollback()
 		return ErrSend
 	}
 	r.repo.Commit(reminder)
