@@ -9,5 +9,8 @@ func NewReminderTransactionService(runner *transaction.Runner) *ReminderTransact
 }
 
 func (s *ReminderTransactionService) Send(id string, fail bool) error {
+	if id == "" {
+		return transaction.ErrSend
+	}
 	return s.runner.Deliver(&transaction.Reminder{ID: id}, fail)
 }

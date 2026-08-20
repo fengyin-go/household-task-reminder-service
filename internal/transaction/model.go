@@ -6,3 +6,5 @@ type Reminder struct {
 }
 
 func (r *Reminder) MarkCommitted() { r.Committed = true }
+
+func (r *Reminder) Reset() { r.Committed = false }
