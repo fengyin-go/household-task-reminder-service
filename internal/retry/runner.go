@@ -1,5 +1,7 @@
 package retry
 
+import "errors"
+
 type Runner struct {
 	repo *Repository
 }
@@ -7,8 +9,13 @@ type Runner struct {
 func NewRunner(repo *Repository) *Runner { return &Runner{repo: repo} }
 
 func (r *Runner) Deliver(id string) error {
-	if err := r.repo.Commit(id); err != nil {
-		return r.repo.Commit(id)
+	err := r.repo.Commit(id)
+	if err == nil {
+		return nil
 	}
-	return nil
+	var committed *CommitError
+	if errors.As(err, &committed) && committed.Committed {
+		return err
+	}
+	return r.repo.Commit(id)
 }

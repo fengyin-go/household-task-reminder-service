@@ -2,6 +2,8 @@ package retry
 
 import "errors"
 
+var ErrTemporary = errors.New("temporary gateway failure")
+
 type Repository struct {
 	entries []string
 	fail    bool
@@ -15,7 +17,7 @@ func (r *Repository) Commit(id string) error {
 	r.entries = append(r.entries, id)
 	if r.fail {
 		r.fail = false
-		return errors.New("delivery failed")
+		return &CommitError{Committed: true, Cause: ErrTemporary}
 	}
 	return nil
 }
