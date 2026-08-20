@@ -7,5 +7,8 @@ type Worker struct{ store *Store }
 func NewWorker(store *Store) *Worker { return &Worker{store: store} }
 
 func (w *Worker) Persist(ctx context.Context, id string) error {
-	return w.store.Save(context.Background(), id)
+	if !Active(ctx) {
+		return context.Canceled
+	}
+	return w.store.Save(ctx, id)
 }

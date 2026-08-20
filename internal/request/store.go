@@ -8,12 +8,11 @@ import (
 type Store struct {
 	mu    sync.Mutex
 	saved []string
-	ctx   context.Context
 }
 
 func (s *Store) Save(ctx context.Context, id string) error {
-	if s.ctx == nil {
-		s.ctx = ctx
+	if !Active(ctx) {
+		return context.Canceled
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()

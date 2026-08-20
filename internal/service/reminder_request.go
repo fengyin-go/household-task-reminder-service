@@ -13,5 +13,11 @@ func NewReminderRequestService(client *request.Client) *ReminderRequestService {
 }
 
 func (s *ReminderRequestService) Create(ctx context.Context, id string) error {
-	return s.client.Send(context.Background(), id)
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if id == "" {
+		return context.Canceled
+	}
+	return s.client.Send(ctx, id)
 }
